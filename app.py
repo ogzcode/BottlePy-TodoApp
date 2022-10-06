@@ -1,4 +1,4 @@
-from bottle import run, route, template, get
+from bottle import run, route, template, get, post, request
 import sqlite3
 from sqlite3 import Error
 
@@ -85,10 +85,32 @@ def delete_todo(id):
 @route("/")
 @route("/home")
 def home_page():
-    return template("views/home.tpl", rows=None)
+    create_table()
+    rows = get_all_todo()
+    return template("views/home.tpl", rows=rows)
 
 @get("/new")
 def new_item_page():
     return template("views/new.tpl", display=False)
+
+@post("/new")
+def new_item():
+    display = None
+    content = request.forms.get("input")
+
+    if content:
+        display = True
+
+    id = get_last_id()
+
+    if not id:
+        id = 1
+    else:
+        id += 1
+
+    add_todo((id, content))
+
+    return template("views/new.tpl", display=display)
+
 
 run(debug=True, reloader=True)
