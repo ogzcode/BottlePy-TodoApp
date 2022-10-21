@@ -16,9 +16,11 @@
     %if rows:
         <div class="todo__box">
             %for row in rows:
-                <p class="todo">{{row[1]}}</p>
+                <a class="todo" href="/delete/{{row[0]}}">{{row[1]}}</a>
             %end 
         </div>
+    %else:
+        <p class="not__found__text">Todo Not Found!!
     %end
 
     <script>
