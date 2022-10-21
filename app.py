@@ -112,5 +112,18 @@ def new_item():
 
     return template("views/new.tpl", display=display)
 
+@get("/delete/:no")
+def delete_get(no):
+    todo = get_todo_with_id(no)
+
+    return template("views/delete.tpl", todo=todo)
+
+@post("/delete/:no")
+def delete_post(no):
+    if request.forms.get("yes"):
+        delete_todo(no)
+
+    return template("views/delete.tpl", todo=None)
+
 
 run(debug=True, reloader=True)
